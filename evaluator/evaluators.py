@@ -3,6 +3,8 @@ from data.hf_dataset_loader import (
     preprocess_sample
 )
 
+from prompts.profanity_prompt import build_prompt
+
 
 def run_evaluation(config):
 
@@ -20,13 +22,10 @@ def run_evaluation(config):
 
         sample = preprocess_sample(sample, idx)
 
-       prompt = build_prompt(sample["text"])
+        prompt = build_prompt(sample["text"])
 
-    print(prompt)
-    
-    print("-" * 60)
-    
-            print("-" * 60)
-    
-            if idx == 4:
-                break
+        print(prompt)
+        print("-" * 60)
+
+        if idx == 4:
+            break
