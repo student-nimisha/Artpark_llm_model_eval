@@ -1,20 +1,17 @@
-
 def build_prompt(text):
 
     return f"""
 You are an expert multilingual profanity detection system.
 
-Classify the following text.
+Classify the text below.
 
-Return EXACTLY one word.
+Return ONLY one of these labels:
 
 safe
-or
-not safe
 
-Do not explain.
-Do not give a reason.
-Do not output anything else.
+or
+
+not safe
 
 Text:
 {text}
