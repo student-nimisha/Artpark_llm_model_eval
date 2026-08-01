@@ -12,16 +12,23 @@ control over:
      hands back either the full re-rendered conversation or a raw string,
      and slicing that STRING against the original prompt is fragile —
      special tokens and chat-template whitespace don't round-trip cleanly
-     through text. This is almost certainly why `prediction` came back
-     empty: string-diffing found nothing beyond the prompt to return.
+     through text.
 
 THE FIX
 -------
 Work at the TOKEN level:
   1. tokenizer.apply_chat_template(messages, tokenize=True,
-     add_generation_prompt=True, return_tensors="pt") -> input_ids
+     add_generation_prompt=True, return_dict=True, return_tensors="pt")
+     -> a dict with "input_ids" and "attention_mask".
+     NOTE: we explicitly pass return_dict=True. Some chat models (Gemma-3
+     among them) always return a dict/BatchEncoding from
+     apply_chat_template regardless of this flag, since their tokenizer
+     is really a multimodal-capable processor under the hood. Requesting
+     the dict explicitly makes the code correct and uniform across every
+     model family instead of assuming a plain tensor comes back.
   2. Record input_ids.shape[-1] = prompt length in tokens.
-  3. model.generate(input_ids, ...)
+  3. model.generate(**encoded, ...) — passing attention_mask too, not
+     just input_ids.
   4. Slice output_ids[0][prompt_len:] (tokens, not characters) and decode
      only that slice with skip_special_tokens=True.
 """
@@ -52,7 +59,7 @@ class HFChatModel(BaseModel):
 
         self.model = AutoModelForCausalLM.from_pretrained(
             self.model_name,
-            torch_dtype=dtype,
+            dtype=dtype,  # `torch_dtype` kwarg is deprecated as of recent transformers
             device_map=model_cfg.get("device_map", "auto"),
             trust_remote_code=trust_remote_code,
         )
@@ -62,18 +69,21 @@ class HFChatModel(BaseModel):
         if self.tokenizer.pad_token_id is None:
             self.tokenizer.pad_token = self.tokenizer.eos_token
 
-    def _build_input_ids(self, messages: List[Dict[str, str]]) -> torch.Tensor:
+    def _build_inputs(self, messages: List[Dict[str, str]]) -> Dict[str, torch.Tensor]:
         if not self.supports_system_role:
             messages = self._merge_system_into_user(messages)
 
-        input_ids = self.tokenizer.apply_chat_template(
+        encoded = self.tokenizer.apply_chat_template(
             messages,
             add_generation_prompt=True,
             tokenize=True,
+            return_dict=True,
             return_tensors="pt",
-        ).to(self.model.device)
+        )
 
-        return input_ids
+        # encoded is a dict/BatchEncoding: {"input_ids": ..., "attention_mask": ...}
+        encoded = {k: v.to(self.model.device) for k, v in encoded.items()}
+        return encoded
 
     @staticmethod
     def _merge_system_into_user(messages: List[Dict[str, str]]) -> List[Dict[str, str]]:
@@ -93,8 +103,8 @@ class HFChatModel(BaseModel):
 
     @torch.inference_mode()
     def generate(self, messages: List[Dict[str, str]], generation_config: Dict[str, Any]) -> str:
-        input_ids = self._build_input_ids(messages)
-        prompt_len = input_ids.shape[-1]
+        encoded = self._build_inputs(messages)
+        prompt_len = encoded["input_ids"].shape[-1]
 
         gen_kwargs = dict(generation_config)
         # Setting both max_length and max_new_tokens triggers a warning and
@@ -104,9 +114,10 @@ class HFChatModel(BaseModel):
         gen_kwargs.setdefault("do_sample", False)
         gen_kwargs.setdefault("pad_token_id", self.tokenizer.pad_token_id)
 
-        output_ids = self.model.generate(input_ids, **gen_kwargs)
+        output_ids = self.model.generate(**encoded, **gen_kwargs)
 
-        # Token-level slice, NOT string-level — this is the actual fix.
+        # Token-level slice, NOT string-level — this is the actual fix
+        # for empty predictions.
         new_tokens = output_ids[0][prompt_len:]
         text = self.tokenizer.decode(new_tokens, skip_special_tokens=True)
         return text.strip()
