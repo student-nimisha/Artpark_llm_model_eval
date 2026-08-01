@@ -15,7 +15,8 @@
         "split": "train",
         "streaming": true,
         "text_column": null,
-        "label_column": null
+        "label_column": null,
+        "language_column": null
     },
 
     "prompt": {
@@ -29,7 +30,7 @@
 
     "evaluation": {
         "metric": "accuracy",
-        "max_samples": 200
+        "max_samples": null
     },
 
     "output": {
