@@ -4,7 +4,7 @@
     "input_type": "transcript",
 
     "model": {
-        "name": "CohereForAI/aya-expanse-8b"
+        "name": "CohereLabs/aya-expanse-8b"
     },
 
     "dataset": {
@@ -18,8 +18,7 @@
     },
 
     "generation": {
-        "temperature": 0.2,
-        "max_new_tokens": 50,
+        "max_new_tokens": 5,
         "do_sample": false
     },
 
