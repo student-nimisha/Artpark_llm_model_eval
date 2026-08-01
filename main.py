@@ -1,6 +1,6 @@
 import json
 
-from evaluators.evaluator import run_evaluation
+from evaluator.evaluators import run_evaluation
 
 
 CONFIG_PATH = "configs/gemma_config.json"
