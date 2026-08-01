@@ -1,4 +1,4 @@
-from datasets.hf_dataset_loader import load_hf_dataset
+from data.hf_dataset_loader import load_hf_dataset
 
 
 def run_evaluation(config):
