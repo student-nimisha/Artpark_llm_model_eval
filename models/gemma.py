@@ -14,39 +14,39 @@ class GemmaModel:
 
         self.model = AutoModelForCausalLM.from_pretrained(
             model_name,
-            torch_dtype=torch.float16,
+            dtype=torch.float16,
             device_map="auto"
         )
 
     def generate(self, prompt, generation_config):
 
-    inputs = self.tokenizer(
-        prompt,
-        return_tensors="pt"
-    ).to(self.model.device)
+        inputs = self.tokenizer(
+            prompt,
+            return_tensors="pt"
+        ).to(self.model.device)
 
-    with torch.no_grad():
+        with torch.no_grad():
 
-        if generation_config["do_sample"]:
+            if generation_config["do_sample"]:
 
-            outputs = self.model.generate(
-                **inputs,
-                max_new_tokens=generation_config["max_new_tokens"],
-                do_sample=True,
-                temperature=generation_config["temperature"]
-            )
+                outputs = self.model.generate(
+                    **inputs,
+                    max_new_tokens=generation_config["max_new_tokens"],
+                    do_sample=True,
+                    temperature=generation_config["temperature"]
+                )
 
-        else:
+            else:
 
-            outputs = self.model.generate(
-                **inputs,
-                max_new_tokens=generation_config["max_new_tokens"],
-                do_sample=False
-            )
+                outputs = self.model.generate(
+                    **inputs,
+                    max_new_tokens=generation_config["max_new_tokens"],
+                    do_sample=False
+                )
 
-    generated_tokens = outputs[0][inputs["input_ids"].shape[1]:]
+        generated_tokens = outputs[0][inputs["input_ids"].shape[1]:]
 
-    return self.tokenizer.decode(
-        generated_tokens,
-        skip_special_tokens=True
-    ).strip()
+        return self.tokenizer.decode(
+            generated_tokens,
+            skip_special_tokens=True
+        ).strip()
