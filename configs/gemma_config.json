@@ -18,9 +18,9 @@
     },
 
     "generation": {
-    "max_new_tokens": 5,
-    "do_sample": false
-    }
+        "max_new_tokens": 5,
+        "do_sample": false
+    },
 
     "evaluation": {
         "metric": "accuracy"
