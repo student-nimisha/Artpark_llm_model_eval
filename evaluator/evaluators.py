@@ -4,6 +4,7 @@ from data.hf_dataset_loader import (
 )
 
 from prompts.profanity_prompt import build_prompt
+
 from models.model_factory import load_model
 
 
@@ -17,6 +18,9 @@ def run_evaluation(config):
 
     print("\nDataset Loaded Successfully\n")
 
+    # -------- Load the LLM here --------
+    model = load_model(config)
+
     print("Displaying first 5 processed samples:\n")
 
     for idx, sample in enumerate(dataset):
@@ -25,7 +29,12 @@ def run_evaluation(config):
 
         prompt = build_prompt(sample["text"])
 
-        print(prompt)
+        prediction = model.generate(
+            prompt,
+            config["generation"]
+        )
+
+        print(prediction)
         print("-" * 60)
 
         if idx == 4:
