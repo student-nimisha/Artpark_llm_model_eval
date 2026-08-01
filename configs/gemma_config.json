@@ -20,7 +20,7 @@
     "generation": {
         "temperature": 0.2,
         "max_new_tokens": 50,
-        "do_sample": false
+        "do_sample": true
     },
 
     "evaluation": {
