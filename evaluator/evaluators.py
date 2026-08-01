@@ -18,7 +18,6 @@ def run_evaluation(config):
 
     print("\nDataset Loaded Successfully\n")
 
-    # -------- Load the LLM here --------
     model = load_model(config)
 
     print("Displaying first 5 processed samples:\n")
@@ -34,7 +33,9 @@ def run_evaluation(config):
             config["generation"]
         )
 
-        print(prediction)
+        print("Prediction :", prediction)
+        print("Ground Truth :", sample["label"])
+
         print("-" * 60)
 
         if idx == 4:
