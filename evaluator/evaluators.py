@@ -4,6 +4,7 @@ from data.hf_dataset_loader import (
 )
 
 from prompts.profanity_prompt import build_prompt
+from models.model_factory import load_model
 
 
 def run_evaluation(config):
