@@ -1,1 +1,34 @@
+{
+    "experiment_name": "gemma_profanity",
 
+    "input_type": "transcript",
+
+    "model": {
+        "name": "google/gemma-3-4b-it"
+    },
+
+    "dataset": {
+        "name": "mangalathkedar/multilingual-indic-profane",
+        "split": "train",
+        "streaming": true
+    },
+
+    "prompt": {
+        "template": "profanity_detection"
+    },
+
+    "generation": {
+        "temperature": 0.2,
+        "max_new_tokens": 50,
+        "do_sample": false
+    },
+
+    "evaluation": {
+        "metric": "accuracy"
+    },
+
+    "output": {
+        "prediction_file": "outputs/gemma_predictions.csv",
+        "metric_file": "outputs/gemma_metrics.json"
+    }
+}
