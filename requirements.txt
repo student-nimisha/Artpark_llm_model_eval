@@ -4,3 +4,4 @@ datasets>=2.19.0
 accelerate>=0.30.0
 sentencepiece
 huggingface_hub
+scikit-learn>=1.4.0
