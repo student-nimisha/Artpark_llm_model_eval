@@ -4,13 +4,18 @@
     "input_type": "transcript",
 
     "model": {
-        "name": "google/gemma-3-4b-it"
+        "name": "google/gemma-3-4b-it",
+        "torch_dtype": "bfloat16",
+        "device_map": "auto",
+        "trust_remote_code": false
     },
 
     "dataset": {
         "name": "mangalathkedar/multilingual-indic-profane",
         "split": "train",
-        "streaming": true
+        "streaming": true,
+        "text_column": null,
+        "label_column": null
     },
 
     "prompt": {
@@ -23,7 +28,8 @@
     },
 
     "evaluation": {
-        "metric": "accuracy"
+        "metric": "accuracy",
+        "max_samples": 200
     },
 
     "output": {
