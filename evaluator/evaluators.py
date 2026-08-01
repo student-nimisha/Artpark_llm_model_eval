@@ -20,9 +20,13 @@ def run_evaluation(config):
 
         sample = preprocess_sample(sample, idx)
 
-        print(sample)
+       prompt = build_prompt(sample["text"])
 
-        print("-" * 60)
-
-        if idx == 4:
-            break
+    print(prompt)
+    
+    print("-" * 60)
+    
+            print("-" * 60)
+    
+            if idx == 4:
+                break
