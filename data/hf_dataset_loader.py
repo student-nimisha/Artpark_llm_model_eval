@@ -1,4 +1,4 @@
-from data import load_dataset
+from datasets import load_dataset
 
 
 def load_hf_dataset(config):
