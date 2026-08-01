@@ -1,13 +1,14 @@
 {
-    "experiment_name": "gemma_profanity",
+    "experiment_name": "gemma_1b_profanity_cpu",
 
     "input_type": "transcript",
 
     "model": {
-        "name": "google/gemma-3-4b-it",
-        "torch_dtype": "bfloat16",
-        "device_map": "auto",
-        "trust_remote_code": false
+        "name": "google/gemma-3-1b-it",
+        "torch_dtype": "float32",
+        "device_map": "cpu",
+        "trust_remote_code": false,
+        "load_in_4bit": false
     },
 
     "dataset": {
@@ -30,11 +31,11 @@
 
     "evaluation": {
         "metric": "accuracy",
-        "max_samples": null
+        "max_samples": 200
     },
 
     "output": {
-        "prediction_file": "outputs/gemma_predictions.csv",
-        "metric_file": "outputs/gemma_metrics.json"
+        "prediction_file": "outputs/gemma_1b_cpu_predictions.csv",
+        "metric_file": "outputs/gemma_1b_cpu_metrics.json"
     }
 }
