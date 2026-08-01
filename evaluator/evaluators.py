@@ -1,4 +1,7 @@
-from data.hf_dataset_loader import load_hf_dataset
+from data.hf_dataset_loader import (
+    load_hf_dataset,
+    preprocess_sample
+)
 
 
 def run_evaluation(config):
@@ -11,17 +14,15 @@ def run_evaluation(config):
 
     print("\nDataset Loaded Successfully\n")
 
-    print("Displaying first 5 samples:\n")
+    print("Displaying first 5 processed samples:\n")
 
-    for i, sample in enumerate(dataset):
+    for idx, sample in enumerate(dataset):
 
-        print(f"Sample {i+1}")
+        sample = preprocess_sample(sample, idx)
 
-        print("Text :", sample["text"])
-
-        print("Label:", sample["label"])
+        print(sample)
 
         print("-" * 60)
 
-        if i == 4:
+        if idx == 4:
             break
