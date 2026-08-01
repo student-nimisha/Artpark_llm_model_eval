@@ -18,24 +18,24 @@ class GemmaModel:
             device_map="auto"
         )
 
-   def generate(self, prompt, generation_config):
+    def generate(self, prompt, generation_config):
 
-    inputs = self.tokenizer(
-        prompt,
-        return_tensors="pt"
-    ).to(self.model.device)
+        inputs = self.tokenizer(
+            prompt,
+            return_tensors="pt"
+        ).to(self.model.device)
 
-    with torch.no_grad():
+        with torch.no_grad():
 
-        outputs = self.model.generate(
-            **inputs,
-            max_new_tokens=generation_config["max_new_tokens"],
-            do_sample=generation_config["do_sample"],
-        )
+            outputs = self.model.generate(
+                **inputs,
+                max_new_tokens=generation_config["max_new_tokens"],
+                do_sample=generation_config["do_sample"]
+            )
 
-    generated_tokens = outputs[0][inputs["input_ids"].shape[1]:]
+        generated_tokens = outputs[0][inputs["input_ids"].shape[1]:]
 
-    return self.tokenizer.decode(
-        generated_tokens,
-        skip_special_tokens=True
-    ).strip()
+        return self.tokenizer.decode(
+            generated_tokens,
+            skip_special_tokens=True
+        ).strip()
