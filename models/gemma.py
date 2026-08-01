@@ -24,32 +24,24 @@ class GemmaModel:
 
     def generate(self, prompt, generation_config):
 
-        inputs = self.tokenizer(
+    inputs = self.tokenizer(
+        prompt,
+        return_tensors="pt"
+    ).to(self.model.device)
 
-            prompt,
+    outputs = self.model.generate(
+        **inputs,
+        max_new_tokens=generation_config["max_new_tokens"],
+        do_sample=generation_config["do_sample"],
+        temperature=generation_config["temperature"]
+    )
 
-            return_tensors="pt"
+    # Decode only the generated tokens
+    generated_tokens = outputs[0][inputs["input_ids"].shape[1]:]
 
-        ).to(self.model.device)
+    answer = self.tokenizer.decode(
+        generated_tokens,
+        skip_special_tokens=True
+    )
 
-        outputs = self.model.generate(
-
-            **inputs,
-
-            max_new_tokens=generation_config["max_new_tokens"],
-
-            temperature=generation_config["temperature"],
-
-            do_sample=generation_config["do_sample"]
-
-        )
-
-        answer = self.tokenizer.decode(
-
-            outputs[0],
-
-            skip_special_tokens=True
-
-        )
-
-        return answer
+    return answer.strip()
