@@ -1,37 +1,12 @@
-import torch
+"""
+Gemma-3 instruct family (e.g. google/gemma-3-4b-it).
 
-from transformers import pipeline
+Everything generic lives in HFChatModel. The only Gemma-specific fact is
+that its chat template does not accept a `system` role message.
+"""
+
+from models.hf_chat_model import HFChatModel
 
 
-class GemmaModel:
-
-    def __init__(self, model_name):
-
-        print(f"\nLoading {model_name}...\n")
-
-        self.pipe = pipeline(
-            task="text-generation",
-            model=model_name,
-            torch_dtype=torch.float16,
-            device_map="auto"
-        )
-
-    def generate(self, prompt, generation_config):
-
-        messages = [
-            {
-                "role": "user",
-                "content": prompt
-            }
-        ]
-
-        output = self.pipe(
-            messages,
-            max_new_tokens=generation_config["max_new_tokens"],
-            do_sample=generation_config["do_sample"]
-        )
-
-        # Extract only the assistant's reply
-        answer = output[0]["generated_text"][-1]["content"]
-
-        return answer.strip()
+class GemmaModel(HFChatModel):
+    supports_system_role = False
