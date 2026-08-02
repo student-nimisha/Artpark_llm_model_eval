@@ -1,5 +1,3 @@
-unknown: n=8921 acc=0.767 macro_f1=0.7529
-[main] done.
 {
   "overall": {
     "num_labeled": 8919,
