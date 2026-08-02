@@ -1,0 +1,88 @@
+unknown: n=8921 acc=0.767 macro_f1=0.7529
+[main] done.
+{
+  "overall": {
+    "num_labeled": 8919,
+    "accuracy": 0.767,
+    "macro_precision": 0.7507,
+    "macro_recall": 0.79,
+    "macro_f1": 0.7529,
+    "weighted_precision": 0.8132,
+    "weighted_recall": 0.767,
+    "weighted_f1": 0.7753,
+    "per_class": {
+      "safe": {
+        "precision": 0.9155,
+        "recall": 0.7294,
+        "f1": 0.8119,
+        "support": 6150
+      },
+      "not safe": {
+        "precision": 0.586,
+        "recall": 0.8505,
+        "f1": 0.6939,
+        "support": 2769
+      }
+    },
+    "confusion_matrix": {
+      "labels": [
+        "safe",
+        "not safe"
+      ],
+      "matrix": [
+        [
+          4486,
+          1664
+        ],
+        [
+          414,
+          2355
+        ]
+      ]
+    },
+    "num_samples": 8921
+  },
+  "per_language": {
+    "unknown": {
+      "num_labeled": 8919,
+      "accuracy": 0.767,
+      "macro_precision": 0.7507,
+      "macro_recall": 0.79,
+      "macro_f1": 0.7529,
+      "weighted_precision": 0.8132,
+      "weighted_recall": 0.767,
+      "weighted_f1": 0.7753,
+      "per_class": {
+        "safe": {
+          "precision": 0.9155,
+          "recall": 0.7294,
+          "f1": 0.8119,
+          "support": 6150
+        },
+        "not safe": {
+          "precision": 0.586,
+          "recall": 0.8505,
+          "f1": 0.6939,
+          "support": 2769
+        }
+      },
+      "confusion_matrix": {
+        "labels": [
+          "safe",
+          "not safe"
+        ],
+        "matrix": [
+          [
+            4486,
+            1664
+          ],
+          [
+            414,
+            2355
+          ]
+        ]
+      },
+      "num_samples": 8921
+    }
+  }
+}
