@@ -29,9 +29,4 @@
         "prediction_file": "outputs/gemma_predictions.csv",
         "metric_file": "outputs/gemma_metrics.json"
     }
-}'''
-
-with open("configs/gemma_config.json", "w", encoding="utf-8") as f:
-    f.write(gemma_4b_config)
-
-print("Restored configs/gemma_config.json (Gemma 3 4B, GPU)")
+}
