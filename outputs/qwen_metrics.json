@@ -1,0 +1,41 @@
+{
+  "num_samples": 8921,
+  "num_labeled": 8919,
+  "accuracy": 0.7982,
+  "macro_precision": 0.7926,
+  "macro_recall": 0.7117,
+  "macro_f1": 0.7317,
+  "weighted_precision": 0.796,
+  "weighted_recall": 0.7982,
+  "weighted_f1": 0.7823,
+  "per_class": {
+    "safe": {
+      "precision": 0.8017,
+      "recall": 0.9398,
+      "f1": 0.8653,
+      "support": 6150
+    },
+    "not safe": {
+      "precision": 0.7835,
+      "recall": 0.4836,
+      "f1": 0.598,
+      "support": 2769
+    }
+  },
+  "confusion_matrix": {
+    "labels": [
+      "safe",
+      "not safe"
+    ],
+    "matrix": [
+      [
+        5780,
+        370
+      ],
+      [
+        1430,
+        1339
+      ]
+    ]
+  }
+}
