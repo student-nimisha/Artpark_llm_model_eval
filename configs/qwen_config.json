@@ -1,0 +1,42 @@
+{
+    "experiment_name": "qwen3_profanity",
+
+    "input_type": "transcript",
+
+    "model": {
+        "name": "Qwen/Qwen3-4B-Instruct-2507",
+        "torch_dtype": "bfloat16",
+        "device_map": "auto",
+        "trust_remote_code": false,
+        "load_in_4bit": false
+    },
+
+    "generation_timeout_seconds": 60,
+
+    "dataset": {
+        "name": "mangalathkedar/multilingual-indic-profane",
+        "split": "train",
+        "streaming": true,
+        "text_column": null,
+        "label_column": null
+    },
+
+    "prompt": {
+        "template": "profanity_detection"
+    },
+
+    "generation": {
+        "max_new_tokens": 10,
+        "do_sample": false
+    },
+
+    "evaluation": {
+        "metric": "accuracy",
+        "max_samples": null
+    },
+
+    "output": {
+        "prediction_file": "outputs/qwen3_predictions.csv",
+        "metric_file": "outputs/qwen3_metrics.json"
+    }
+}
