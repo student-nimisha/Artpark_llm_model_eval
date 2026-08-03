@@ -1,4 +1,4 @@
-gemma_4b_config = '''{
+{
     "experiment_name": "gemma_profanity",
     "input_type": "transcript",
     "model": {
